@@ -12,6 +12,7 @@ function knightMoves(start, end) {
   }
 
   function knightJumps(startPos, explored) {
+    // Returns array of all possible single jump positions from given start position
     const exploredSet = new Set(explored.map((coords) => coords.toString()));
     const possibleMoves = [
       [1, 2],
@@ -37,7 +38,6 @@ function knightMoves(start, end) {
         newY <= 7 &&
         !exploredSet.has(newPosition.toString())
       ) {
-        console.log('ADD HER TO THE PILE');
         validJumps.push(newPosition);
       }
     }
@@ -47,23 +47,23 @@ function knightMoves(start, end) {
   if (arraysEqual(start, end)) return start;
   // Checking if start = end
 
-  queue.push([start]);
   positionsExplored.push(start);
+  queue.push([start]);
 
   while (queue.length > 0) {
-    // This will be changed to while queue
+    // While there are unexplored positions, run the loop
     const currentPath = queue.shift();
     const currentPos = currentPath[currentPath.length - 1];
     const validMoves = knightJumps(currentPos, positionsExplored);
     for (const move of validMoves) {
-      queue.push([...currentPath]);
-      queue[queue.length - 1].push(move);
-      console.log(queue[queue.length - 1]);
-      if (arraysEqual(move, end)) return queue[queue.length - 1];
+      const newPath = [...currentPath, move];
+      if (arraysEqual(move, end)) return newPath;
+      // Ends loop if end point is found
+      queue.push(newPath);
       positionsExplored.push(move);
     }
-    console.log([...queue]);
   }
+  return 'No path found';
 }
 
-console.log(knightMoves([0, 0], [4, 3]));
+console.log(knightMoves([0, 0], [1, 1]));
