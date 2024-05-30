@@ -50,23 +50,20 @@ function knightMoves(start, end) {
   queue.push([start]);
   positionsExplored.push(start);
 
-  while (queue) {
+  while (queue.length > 0) {
     // This will be changed to while queue
-    // console.log(queue[0][queue.length - 1]);
-    const validMoves = knightJumps(
-      queue[0][queue.length - 1],
-      positionsExplored,
-    );
+    const currentPath = queue.shift();
+    const currentPos = currentPath[currentPath.length - 1];
+    const validMoves = knightJumps(currentPos, positionsExplored);
     for (const move of validMoves) {
-      queue.push([...queue[0]]);
+      queue.push([...currentPath]);
       queue[queue.length - 1].push(move);
+      console.log(queue[queue.length - 1]);
       if (arraysEqual(move, end)) return queue[queue.length - 1];
       positionsExplored.push(move);
     }
-    queue.shift();
-    console.log('TESTESTEST');
     console.log([...queue]);
   }
 }
 
-console.log(knightMoves([0, 0], [4, 5]));
+console.log(knightMoves([0, 0], [4, 3]));
